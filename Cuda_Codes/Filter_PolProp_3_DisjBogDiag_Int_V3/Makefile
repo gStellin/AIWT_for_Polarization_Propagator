@@ -1,0 +1,27 @@
+# *************
+# Standard compiler options  --  GPU
+# Specifications for JURECA 
+# Jülich Supercomputing Centre
+
+F90=pgf90
+C=pgcc
+#NVCC="/usr/local/apps/cuda/cuda-7.5"/bin/nvcc
+NVCC=nvcc
+
+FNAME=Filter_PolProp_3_DisjBogDiag_Int_V3
+
+# *************
+OBJ = $(FNAME).o
+
+$(FNAME):$(OBJ)
+	$(NVCC) -o $@ $(OBJ)
+
+$(FNAME).o:
+	$(NVCC) -c  $(FNAME).cu 
+	
+# *************
+clean :
+	rm -v -f *.o 
+
+
+

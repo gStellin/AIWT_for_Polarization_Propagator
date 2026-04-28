@@ -1,0 +1,759 @@
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <string.h>
+#include <array>
+#include <fstream> 
+
+int main (){
+
+	using namespace std;
+
+//**********************************************************************************************
+//	Definition of the constants
+
+	#define S 21087
+
+	#define max_thread 256 // max: 1024
+	#define max_block 512
+
+	#define combfilepath "Out_Comb_3_Disconnected_V2U.m"
+	#define multfilepath "Out_Mult_3_Disconnected_V2U.m"
+
+//****************************************************************************
+//	Initialization of the arrays
+
+	int AdVertices[7][2][S];
+	int MultdVertices[S];
+	int AdTemp[7][2][S];
+	int MultdTemp[S];
+	int Temp[7][2][16];
+	int Test[7][2];
+
+	array<array<array<int,2>,7>,S> Adisc;	
+
+	long int s, t, u, v, i, j, k; 
+
+	bool IfRepeat;
+	long int aux_repeat[16];
+	int IfTemp[16][7];
+
+	long int nS;
+
+	int i1, j1;
+	int i2, j2;
+	int i3, j3;
+	int i4, j4;
+	int i5, j5;
+	int i6, j6;
+	int i7, j7;
+	int i8, j8;
+
+	int t1, t2;
+
+	#include "In_Comb_3_Disconnected_V2U.h"
+
+//**********************************************************************************************
+//	Opening titles 
+
+	printf("*****************************************************************\n");
+	printf("								 \n");
+	printf("         A U T O M A T E D    I M P L E M E N T A T I O N        \n"); 
+	printf("								 \n");
+	printf("               O F   W I C K ' S   T H E O R E M                 \n");
+	printf("								 \n");
+	printf("   		    f o r   G o r k o v' s                       \n");
+	printf("								 \n");
+	printf("	 P o l a r i z a t i o n   P r o p a g a t o r		 \n");
+	printf("								 \n");
+	printf("             	  a t   t h i r d   O r d e r		         \n");
+	printf("								 \n");
+	printf("*****************************************************************\n");
+	printf("								 \n");
+	printf("	      F i l t e r i n g    P r o c e s s 		 \n");
+	printf("								 \n");
+	printf("      o f   f u l l y - c o n t r a c t e d   t e r m s		 \n");
+	printf("								 \n");
+	printf("            o f  D i s c o n n e c t e d   t y p e               \n");
+	printf("								 \n");
+	printf("*****************************************************************\n");
+	printf("								 \n");
+
+//**********************************************************************************************
+//	Initialization of the multi dim. arrays for the original and filtered 
+//	fully-contracted terms, together with their multiplicity
+
+	for(t=0; t<= 1; t++){
+
+		printf("         Permutation of vertices %d: iterations started.         \n",t+1);
+		printf("								 \n");
+		
+		if(t == 0){
+			nS = S;
+			for(u=0; u<=nS-1; u++){
+				for(i=0; i<=6; i++){
+					for(j=0; j<=1; j++){
+						AdTemp[i][j][u] = Adisc[u][i][j];
+					};
+				};
+				MultdTemp[u] = 0;
+				MultdVertices[u] = 0;
+			};
+		}else{
+			nS = s;
+			for(u=0; u<=S-1; u++){
+				for(i=0; i<=6; i++){
+					for(j=0; j<=1; j++){
+						AdTemp[i][j][u] = AdVertices[i][j][u];
+					};
+				};
+				MultdTemp[u] = MultdVertices[u];
+				MultdVertices[u] = 0;
+			};
+		};
+
+	
+  		s = 1;
+  		AdVertices[0][0][0] = AdTemp[0][0][0];
+  		AdVertices[0][1][0] = AdTemp[0][1][0];
+  		AdVertices[1][0][0] = AdTemp[1][0][0];
+  		AdVertices[1][1][0] = AdTemp[1][1][0];
+  		AdVertices[2][0][0] = AdTemp[2][0][0];
+  		AdVertices[2][1][0] = AdTemp[2][1][0];
+  		AdVertices[3][0][0] = AdTemp[3][0][0];
+  		AdVertices[3][1][0] = AdTemp[3][1][0];
+  		AdVertices[4][0][0] = AdTemp[4][0][0];
+  		AdVertices[4][1][0] = AdTemp[4][1][0];
+  		AdVertices[5][0][0] = AdTemp[5][0][0];
+  		AdVertices[5][1][0] = AdTemp[5][1][0];
+  		AdVertices[6][0][0] = AdTemp[6][0][0];
+  		AdVertices[6][1][0] = AdTemp[6][1][0];
+		MultdVertices[0] = max(1,MultdTemp[0]);
+
+//**********************************************************************************************
+//	Beginning of the main loop (fully-contracted term "u")
+
+  		for(u = 1; u <= nS-1; u++){
+   
+   			for(i = 0; i <= 6; i++){
+				for(j = 0; j <= 1; j++){
+     					if(AdTemp[i][j][u] == 1){
+						i1 = i;
+						j1 = j;
+					};
+     					if(AdTemp[i][j][u] == 2){
+						i2 = i;
+						j2 = j;
+					};
+     					if(AdTemp[i][j][u] == 3){
+						i3 = i;
+						j3 = j;
+					};
+     					if(AdTemp[i][j][u] == 4){
+						i4 = i;
+						j4 = j;
+					};
+     					if(AdTemp[i][j][u] == 5){
+						i5 = i;
+						j5 = j;
+					};
+     					if(AdTemp[i][j][u] == 6){
+						i6 = i;
+						j6 = j;
+					};
+     					if(AdTemp[i][j][u] == 7){
+						i7 = i;
+						j7 = j;
+					};
+     					if(AdTemp[i][j][u] == 8){
+						i8 = i;
+						j8 = j;
+					};
+					Test[i][j] = AdTemp[i][j][u];
+ 				};
+			};
+
+//**********************************************************************************************************
+// 	Permutation of the vertices: 2 equivalent ways to perform the operation exist (external permutations)	
+
+   			if(t == 0){ // Identity permutation [1][2]: no internal index exchange
+    				Test[i1][j1] = 1;
+    				Test[i2][j2] = 2;
+    				Test[i3][j3] = 3;
+    				Test[i4][j4] = 4;
+    				Test[i5][j5] = 5;
+    				Test[i6][j6] = 6;
+    				Test[i7][j7] = 7;
+    				Test[i8][j8] = 8;
+			}else if(t == 1){ // Permutation [12]: no internal index exchange
+    				Test[i1][j1] = 5;
+    				Test[i2][j2] = 6;
+    				Test[i3][j3] = 7;
+    				Test[i4][j4] = 8;
+    				Test[i5][j5] = 1;
+    				Test[i6][j6] = 2;
+    				Test[i7][j7] = 3;
+    				Test[i8][j8] = 4;
+			};
+
+//***************************************************************************************************
+//	Implementation of the 16 permutations of the indices within each vertex (internal permutations)
+   
+   			for(i = 0; i <= 6; i++){
+    				for(j = 0; j <= 1; j++){
+     					if(Test[i][j] == 1){
+						Temp[i][j][0] = 2;
+					}else if(Test[i][j] == 2){
+						Temp[i][j][0] = 1;
+					}else if(Test[i][j] >= 3){ 
+						Temp[i][j][0] = Test[i][j];  // Permutation pq
+     					};
+					if(Test[i][j] == 1){
+						Temp[i][j][1] = 2;
+					}else if(Test[i][j] == 2){ 
+						Temp[i][j][1] = 1;
+					}else if(Test[i][j] == 3){
+						Temp[i][j][1] = 4;
+					}else if(Test[i][j] == 4){
+						Temp[i][j][1] = 3;
+					}else if(Test[i][j] >= 5){
+						Temp[i][j][1] = Test[i][j]; // Permutation pq rs
+					};
+     					if(Test[i][j] == 3){
+						Temp[i][j][2] = 4;
+					}else if(Test[i][j] == 4){
+						Temp[i][j][2] = 3;
+					}else if(Test[i][j] >= 5 || Test[i][j] <=  2){ 
+      						Temp[i][j][2] = Test[i][j];  // Permutation rs
+					};
+     					if(Test[i][j] == 5){
+						Temp[i][j][3] = 6;
+     					}else if(Test[i][j] == 6){
+						Temp[i][j][3] = 5;
+     					}else if(Test[i][j] >= 7 || Test[i][j] <=  4){ 
+      						Temp[i][j][3] = Test[i][j]; // Permutation tu
+     					};
+					if(Test[i][j] == 5){
+						Temp[i][j][4] = 6;
+					}else if(Test[i][j] == 6){
+						Temp[i][j][4] = 5;
+					}else if(Test[i][j] == 8){
+						Temp[i][j][4] = 7;
+					}else if(Test[i][j] == 7){ 
+						Temp[i][j][4] = 8;
+					}else if(Test[i][j] >= 9 || Test[i][j] <= 4){ 
+      						Temp[i][j][4] = Test[i][j]; // Permutation tu vw
+     					};
+					if(Test[i][j] == 8){
+						Temp[i][j][5] = 7;
+     					}else if(Test[i][j] == 7){ 
+						Temp[i][j][5] = 8;
+					}else if(Test[i][j] >= 9 || Test[i][j] <=  6){ 
+      						Temp[i][j][5] = Test[i][j];   // Permutation vw 
+					};
+     					if(Test[i][j] == 1){
+						Temp[i][j][6] = 2;
+     					}else if(Test[i][j] == 2){
+						Temp[i][j][6] = 1;
+     					}else if(Test[i][j] == 5){
+						Temp[i][j][6] = 6;
+     					}else if(Test[i][j] == 6){
+						Temp[i][j][6] = 5;
+     					}else if(Test[i][j] >= 7 || (Test[i][j] >= 3 && Test[i][j] <= 4)){
+      						Temp[i][j][6] = Test[i][j]; // Permutation pq | tu 
+					};
+     					if(Test[i][j] == 1){
+						Temp[i][j][7] = 2;
+     					}else if(Test[i][j] == 2){
+						Temp[i][j][7] = 1;
+     					}else if(Test[i][j] == 5){
+						Temp[i][j][7] = 6;
+     					}else if(Test[i][j] == 6){
+						Temp[i][j][7] = 5;
+     					}else if(Test[i][j] == 8){ 
+						Temp[i][j][7] = 7;
+     					}else if(Test[i][j] == 7){ 
+						Temp[i][j][7] = 8;
+     					}else if(Test[i][j] >= 9 || (Test[i][j] >= 3 && Test[i][j] <= 4)){ 
+      						Temp[i][j][7] = Test[i][j]; // Permutation pq | tu vw 
+     					};
+     					if(Test[i][j] == 1){
+						Temp[i][j][8] = 2;
+     					}else if(Test[i][j] == 2){
+			 			Temp[i][j][8] = 1;
+     			 		}else if(Test[i][j] == 8){
+						Temp[i][j][8] = 7;
+     					}else if(Test[i][j] == 7){ 
+						Temp[i][j][8] = 8;
+					}else if(Test[i][j] >= 9 || (Test[i][j] >= 3 && Test[i][j] <= 6)){
+       						Temp[i][j][8] = Test[i][j];   // Permutation pq | vw 
+					}; 
+					if(Test[i][j] == 1){ 
+						Temp[i][j][9] = 2;
+     					}else if(Test[i][j] == 2){
+						Temp[i][j][9] = 1;
+     					}else if(Test[i][j] == 3){
+						Temp[i][j][9] = 4;
+     					}else if(Test[i][j] == 4){
+						Temp[i][j][9] = 3;
+     					}else if(Test[i][j] == 5){
+						Temp[i][j][9] = 6;
+     					}else if(Test[i][j] == 6){
+						Temp[i][j][9] = 5;
+     					}else if(Test[i][j] >= 7){
+						Temp[i][j][9] = Test[i][j]; // Permutation pq rs | tu
+					}; 
+     					if(Test[i][j] == 1){
+						Temp[i][j][10] = 2;
+     					}else if(Test[i][j] == 2){ 
+						Temp[i][j][10] = 1;
+     					}else if(Test[i][j] == 3){
+						Temp[i][j][10] = 4;
+     					}else if(Test[i][j] == 4){
+						Temp[i][j][10] = 3;
+     					}else if(Test[i][j] == 5){
+						Temp[i][j][10] = 6;
+     					}else if(Test[i][j] == 6){
+						Temp[i][j][10] = 5;
+     					}else if(Test[i][j] == 7){
+						Temp[i][j][10] = 8;
+     					}else if(Test[i][j] == 8){
+						Temp[i][j][10] = 7;
+     					}else if(Test[i][j] >= 9){
+						Temp[i][j][10] = Test[i][j];  // Permutation pq rs | tu vw 
+     					};
+					if(Test[i][j] == 1){
+						Temp[i][j][11] = 2;
+     					}else if(Test[i][j] == 2){
+						Temp[i][j][11] = 1;
+     					}else if(Test[i][j] == 3){
+						Temp[i][j][11] = 4;
+     					}else if(Test[i][j] == 4){
+						Temp[i][j][11] = 3;
+     					}else if(Test[i][j] == 8){
+						Temp[i][j][11] = 7;
+     					}else if(Test[i][j] == 7){
+						Temp[i][j][11] = 8;
+     					}else if(Test[i][j] >= 9 || (Test[i][j] >= 5 && Test[i][j] <= 6)){ 
+      						Temp[i][j][11] = Test[i][j];  // Permutation pq rs | vw 
+     					};
+     					if(Test[i][j] == 3){
+						Temp[i][j][12] = 4;
+     					}else if(Test[i][j] == 4){
+						Temp[i][j][12] = 3;
+     					}else if(Test[i][j] == 5){
+						Temp[i][j][12] = 6;
+     					}else if(Test[i][j] == 6){
+						Temp[i][j][12] = 5;
+     					}else if(Test[i][j] >= 7 || Test[i][j] <= 2){ 
+      						Temp[i][j][12] = Test[i][j];  // Permutation rs | tu
+					};
+     					if(Test[i][j] == 3){
+						Temp[i][j][13] = 4;
+     					}else if(Test[i][j] == 4){
+						Temp[i][j][13] = 3;
+     					}else if(Test[i][j] == 5){ 
+						Temp[i][j][13] = 6;
+     					}else if(Test[i][j] == 6){
+						Temp[i][j][13] = 5;
+     					}else if(Test[i][j] == 8){
+						Temp[i][j][13] = 7;
+     					}else if(Test[i][j] == 7){
+						Temp[i][j][13] = 8;
+     					}else if(Test[i][j] >= 9 || Test[i][j] <= 2){ 
+      						Temp[i][j][13] = Test[i][j];   // Permutation rs | tu vw 
+     					};
+     					if(Test[i][j] == 3){
+						Temp[i][j][14] = 4;
+     					}else if(Test[i][j] == 4){
+						Temp[i][j][14] = 3;
+     					}else if(Test[i][j] == 8){
+						Temp[i][j][14] = 7;
+     					}else if(Test[i][j] == 7){
+						Temp[i][j][14] = 8;
+					}else if(Test[i][j] >= 9 || (Test[i][j] >= 5 && Test[i][j] <= 6) || Test[i][j] <= 2){
+						Temp[i][j][14] = Test[i][j];  // Permutation rs | vw 
+					};		
+					Temp[i][j][15] = Test[i][j];  // no permutation 
+				};
+			};
+
+//**********************************************************************************************
+//	Sorting of the indices in ascending order from left to right within the pairs
+
+   			for(i = 0; i <= 15; i++){
+    				if(Temp[0][0][i] > Temp[0][1][i]){
+					t2 = Temp[0][1][i];
+					t1 = Temp[0][0][i]; 
+					Temp[0][0][i] = t2; 
+					Temp[0][1][i] = t1;
+				};
+    				if(Temp[1][0][i] > Temp[1][1][i]){
+					t2 = Temp[1][1][i];
+					t1 = Temp[1][0][i]; 
+					Temp[1][0][i] = t2; 
+					Temp[1][1][i] = t1;
+				};
+    				if(Temp[2][0][i] > Temp[2][1][i]){
+					t2 = Temp[2][1][i]; 
+     					t1 = Temp[2][0][i]; 
+					Temp[2][0][i] = t2; 
+					Temp[2][1][i] = t1;
+				};
+    				if(Temp[3][0][i] > Temp[3][1][i]){
+					t2 = Temp[3][1][i]; 
+     					t1 = Temp[3][0][i]; 
+					Temp[3][0][i] = t2; 
+					Temp[3][1][i] = t1;
+				};
+    				if(Temp[4][0][i] > Temp[4][1][i]){
+					t2 = Temp[4][1][i]; 
+     					t1 = Temp[4][0][i]; 
+					Temp[4][0][i] = t2; 
+					Temp[4][1][i] = t1;
+				};
+    				if(Temp[5][0][i] > Temp[5][1][i]){
+					t2 = Temp[5][1][i]; 
+     					t1 = Temp[5][0][i]; 
+					Temp[5][0][i] = t2; 
+					Temp[5][1][i] = t1;
+				};
+    				if(Temp[6][0][i] > Temp[6][1][i]){
+					t2 = Temp[6][1][i]; 
+     					t1 = Temp[6][0][i]; 
+					Temp[6][0][i] = t2; 
+					Temp[6][1][i] = t1;
+				};
+    			};
+
+			int *Temp1 = new int[16];
+			int *Temp2 = new int[16];
+			int *Temp3 = new int[16];
+			int *Temp4 = new int[16];
+			int *Temp5 = new int[16];
+			int *Temp6 = new int[16];
+			int *Temp7 = new int[16];
+			int *Temp8 = new int[16];
+			int *Temp9 = new int[16];
+			int *Temp10 = new int[16];
+			int *Temp11 = new int[16];
+			int *Temp12 = new int[16];
+			int *Temp13 = new int[16];
+			int *Temp14 = new int[16];
+   
+			int *Avert1 = new int[s];
+			int *Avert2 = new int[s];
+			int *Avert3 = new int[s];
+			int *Avert4 = new int[s];
+			int *Avert5 = new int[s];
+			int *Avert6 = new int[s];
+			int *Avert7 = new int[s];
+			int *Avert8 = new int[s];
+			int *Avert9 = new int[s];
+			int *Avert10 = new int[s];
+			int *Avert11 = new int[s];
+			int *Avert12 = new int[s];
+			int *Avert13 = new int[s];
+			int *Avert14 = new int[s];
+
+			for(k=0; k<=16; k++){
+				Temp1[k] = Temp[0][0][k];
+				Temp2[k] = Temp[0][1][k];
+				Temp3[k] = Temp[1][0][k];
+				Temp4[k] = Temp[1][1][k];
+				Temp5[k] = Temp[2][0][k];
+				Temp6[k] = Temp[2][1][k];
+				Temp7[k] = Temp[3][0][k];
+				Temp8[k] = Temp[3][1][k];
+				Temp9[k] = Temp[4][0][k];
+				Temp10[k] = Temp[4][1][k];
+				Temp11[k] = Temp[5][0][k];
+				Temp12[k] = Temp[5][1][k];
+				Temp13[k] = Temp[6][0][k];
+				Temp14[k] = Temp[6][1][k];
+			};
+
+			for(v=0; v<=s-1; v++){
+				Avert1[v] = AdVertices[0][0][v];
+				Avert2[v] = AdVertices[0][1][v];
+				Avert3[v] = AdVertices[1][0][v];
+				Avert4[v] = AdVertices[1][1][v];
+				Avert5[v] = AdVertices[2][0][v];
+				Avert6[v] = AdVertices[2][1][v];
+				Avert7[v] = AdVertices[3][0][v];
+				Avert8[v] = AdVertices[3][1][v];
+				Avert9[v] = AdVertices[4][0][v];
+				Avert10[v] = AdVertices[4][1][v];
+				Avert11[v] = AdVertices[5][0][v];
+				Avert12[v] = AdVertices[5][1][v];
+				Avert13[v] = AdVertices[6][0][v];
+				Avert14[v] = AdVertices[6][1][v];
+			};
+		
+			IfRepeat = false;
+
+//**********************************************************************************************
+// 	Test of equivalence: the fully-contracted term "u" undergoes 64 index permutations, each of them is 
+// 	compared with the "s" inequivalent fully-contracted terms, already stored. 
+
+			for(v = 0; v<=s-1; v++){
+
+     				for(i = 0; i <= 15; i++){
+       					for(j = 0; j <= 6; j++){
+        					IfTemp[i][j] = 0;
+					};
+					aux_repeat[i] = 0;						
+				};
+
+      		
+       				for(j = 0; j <= 15; j++){
+           				if(Avert1[v] == Temp1[j] && Avert2[v] == Temp2[j]){
+						IfTemp[j][0] = 1;
+					}else if(Avert1[v] == Temp3[j] && Avert2[v] == Temp4[j]){
+						IfTemp[j][1] = 1;
+					}else if(Avert1[v] == Temp5[j] && Avert2[v] == Temp6[j]){
+						IfTemp[j][2] = 1;
+	 				}else if(Avert1[v] == Temp7[j] && Avert2[v] == Temp8[j]){
+						IfTemp[j][3] = 1;
+					}else if(Avert1[v] == Temp9[j] && Avert2[v] == Temp10[j]){ 
+             					IfTemp[j][4] = 1;
+					}else if(Avert1[v] == Temp11[j] && Avert2[v] == Temp12[j]){ 
+             					IfTemp[j][5] = 1;
+					}else if(Avert1[v] == Temp13[j] && Avert2[v] == Temp14[j]){ 
+             					IfTemp[j][6] = 1;
+					};
+
+           				if(Avert3[v] == Temp1[j] && Avert4[v] == Temp2[j]){
+						IfTemp[j][0] = 1;
+					}else if(Avert3[v] == Temp3[j] && Avert4[v] == Temp4[j]){
+						IfTemp[j][1] = 1;
+					}else if(Avert3[v] == Temp5[j] && Avert4[v] == Temp6[j]){
+						IfTemp[j][2] = 1;
+	 				}else if(Avert3[v] == Temp7[j] && Avert4[v] == Temp8[j]){
+						IfTemp[j][3] = 1;
+					}else if(Avert3[v] == Temp9[j] && Avert4[v] == Temp10[j]){ 
+             					IfTemp[j][4] = 1;
+					}else if(Avert3[v] == Temp11[j] && Avert4[v] == Temp12[j]){ 
+             					IfTemp[j][5] = 1;
+					}else if(Avert3[v] == Temp13[j] && Avert4[v] == Temp14[j]){ 
+             					IfTemp[j][6] = 1;
+					};
+
+           				if(Avert5[v] == Temp1[j] && Avert6[v] == Temp2[j]){
+						IfTemp[j][0] = 1;
+					}else if(Avert5[v] == Temp3[j] && Avert6[v] == Temp4[j]){
+						IfTemp[j][1] = 1;
+					}else if(Avert5[v] == Temp5[j] && Avert6[v] == Temp6[j]){
+						IfTemp[j][2] = 1;
+	 				}else if(Avert5[v] == Temp7[j] && Avert6[v] == Temp8[j]){
+						IfTemp[j][3] = 1;
+					}else if(Avert5[v] == Temp9[j] && Avert6[v] == Temp10[j]){ 
+             					IfTemp[j][4] = 1;
+					}else if(Avert5[v] == Temp11[j] && Avert6[v] == Temp12[j]){ 
+             					IfTemp[j][5] = 1;
+					}else if(Avert5[v] == Temp13[j] && Avert6[v] == Temp14[j]){ 
+             					IfTemp[j][6] = 1;
+					};
+
+           				if(Avert7[v] == Temp1[j] && Avert8[v] == Temp2[j]){
+						IfTemp[j][0] = 1;
+					}else if(Avert7[v] == Temp3[j] && Avert8[v] == Temp4[j]){
+						IfTemp[j][1] = 1;
+					}else if(Avert7[v] == Temp5[j] && Avert8[v] == Temp6[j]){
+						IfTemp[j][2] = 1;
+	 				}else if(Avert7[v] == Temp7[j] && Avert8[v] == Temp8[j]){
+						IfTemp[j][3] = 1;
+					}else if(Avert7[v] == Temp9[j] && Avert8[v] == Temp10[j]){ 
+             					IfTemp[j][4] = 1;
+					}else if(Avert7[v] == Temp11[j] && Avert8[v] == Temp12[j]){ 
+             					IfTemp[j][5] = 1;
+					}else if(Avert7[v] == Temp13[j] && Avert8[v] == Temp14[j]){ 
+             					IfTemp[j][6] = 1;
+					};
+
+           				if(Avert9[v] == Temp1[j] && Avert10[v] == Temp2[j]){
+						IfTemp[j][0] = 1;
+					}else if(Avert9[v] == Temp3[j] && Avert10[v] == Temp4[j]){
+						IfTemp[j][1] = 1;
+					}else if(Avert9[v] == Temp5[j] && Avert10[v] == Temp6[j]){
+						IfTemp[j][2] = 1;
+	 				}else if(Avert9[v] == Temp7[j] && Avert10[v] == Temp8[j]){
+						IfTemp[j][3] = 1;
+					}else if(Avert9[v] == Temp9[j] && Avert10[v] == Temp10[j]){ 
+             					IfTemp[j][4] = 1;
+					}else if(Avert9[v] == Temp11[j] && Avert10[v] == Temp12[j]){ 
+             					IfTemp[j][5] = 1;
+					}else if(Avert9[v] == Temp13[j] && Avert10[v] == Temp14[j]){ 
+             					IfTemp[j][6] = 1;
+					};
+
+           				if(Avert11[v] == Temp1[j] && Avert12[v] == Temp2[j]){
+						IfTemp[j][0] = 1;
+					}else if(Avert11[v] == Temp3[j] && Avert12[v] == Temp4[j]){
+						IfTemp[j][1] = 1;
+					}else if(Avert11[v] == Temp5[j] && Avert12[v] == Temp6[j]){
+						IfTemp[j][2] = 1;
+	 				}else if(Avert11[v] == Temp7[j] && Avert12[v] == Temp8[j]){
+						IfTemp[j][3] = 1;
+					}else if(Avert11[v] == Temp9[j] && Avert12[v] == Temp10[j]){ 
+             					IfTemp[j][4] = 1;
+					}else if(Avert11[v] == Temp11[j] && Avert12[v] == Temp12[j]){ 
+             					IfTemp[j][5] = 1;
+					}else if(Avert11[v] == Temp13[j] && Avert12[v] == Temp14[j]){ 
+             					IfTemp[j][6] = 1;
+					};
+
+           				if(Avert13[v] == Temp1[j] && Avert14[v] == Temp2[j]){
+						IfTemp[j][0] = 1;
+					}else if(Avert13[v] == Temp3[j] && Avert14[v] == Temp4[j]){
+						IfTemp[j][1] = 1;
+					}else if(Avert13[v] == Temp5[j] && Avert14[v] == Temp6[j]){
+						IfTemp[j][2] = 1;
+	 				}else if(Avert13[v] == Temp7[j] && Avert14[v] == Temp8[j]){
+						IfTemp[j][3] = 1;
+					}else if(Avert13[v] == Temp9[j] && Avert14[v] == Temp10[j]){ 
+             					IfTemp[j][4] = 1;
+					}else if(Avert13[v] == Temp11[j] && Avert14[v] == Temp12[j]){ 
+             					IfTemp[j][5] = 1;
+					}else if(Avert13[v] == Temp13[j] && Avert14[v] == Temp14[j]){ 
+             					IfTemp[j][6] = 1;
+					};
+
+    		
+					if(IfTemp[j][0] + IfTemp[j][1] + IfTemp[j][2] + IfTemp[j][3] 
+			 			+ IfTemp[j][4] + IfTemp[j][5] + IfTemp[j][6] == 7){
+						aux_repeat[j] += 1; 
+					};
+
+
+					if(aux_repeat[j] > 0){
+						IfRepeat = true;
+						break;
+					}
+				};
+
+				if(IfRepeat == true){
+					MultdVertices[v] = MultdVertices[v] + max(1,MultdTemp[u]);
+					break;
+				};
+
+
+			};
+
+//**********************************************************************************************
+
+			delete [] Temp1;
+			delete [] Temp2;
+			delete [] Temp3;
+			delete [] Temp4;
+			delete [] Temp5;
+			delete [] Temp6;
+			delete [] Temp7;
+			delete [] Temp8;
+			delete [] Temp9;
+			delete [] Temp10;
+			delete [] Temp11;
+			delete [] Temp12;
+			delete [] Temp13;
+			delete [] Temp14;
+
+			delete [] Avert1;
+			delete [] Avert2;
+			delete [] Avert3;
+			delete [] Avert4;
+			delete [] Avert5;
+			delete [] Avert6;
+			delete [] Avert7;
+			delete [] Avert8;
+			delete [] Avert9;
+			delete [] Avert10;
+			delete [] Avert11;
+			delete [] Avert12;
+			delete [] Avert13;
+			delete [] Avert14;
+
+	
+			if(IfRepeat == false){
+				s++; 
+				for(i=0; i<=6; i++){
+					for(j=0; j<=1; j++){
+    						AdVertices[i][j][s-1] = AdTemp[i][j][u];
+					};
+				};
+				MultdVertices[s-1] = max(1,MultdTemp[u]);
+			};
+
+			if(u%500 == 0){
+				printf("     Loop %d completed and %d inequivalent elements found.    \n",u,s-1);
+			};
+		};
+
+		printf("								 \n");
+		printf("        Permutation of vertices %d: iterations completed.        \n",t+1);
+		printf("								 \n");
+		printf("*****************************************************************\n");
+		printf("								 \n");
+
+	};
+
+//**********************************************************************************************
+	// Multiplicity check for the filtered fully-contracted terms
+
+	long int Multiplicity;
+
+	Multiplicity = 0;
+	for(u = 0; u <= s-1; u++){
+		Multiplicity = Multiplicity + MultdVertices[u];
+	};
+
+	if(Multiplicity == S){
+		printf("                  Filtering process successful:                  \n");
+		printf("								 \n");
+	}else{
+		printf("                   Filtering process failed:                     \n");
+		printf("                      Multiplicity = %d                      \n",Multiplicity);
+		printf("             Initial fully-contracted terms = %d.                \n",S);
+	};
+		printf("               %d inequivalent elements found.               \n",s);
+		printf("								 \n");
+		printf("*****************************************************************\n");
+		
+
+//**********************************************************************************************
+//	Generation of the output files 
+
+	FILE * MultFile;
+
+	MultFile = fopen(multfilepath,"w+");
+
+	for(u = 0; u <= s-1; u++){
+
+		fprintf(MultFile,"GGFMult[[%ld]] = %d;\n",u+1,MultdVertices[u]);
+
+	};
+
+	fclose(MultFile);
+
+	FILE * CombFile;
+
+	CombFile = fopen(combfilepath,"w+");
+
+	for(u = 0; u <= s-1; u++){
+
+		fprintf(CombFile,"CombDisc[[%ld]] = {{%d,%d},{%d,%d},{%d,%d},{%d,%d},{%d,%d},{%d,%d},{%d,%d}};\n",
+		u+1,AdVertices[0][0][u],AdVertices[0][1][u],AdVertices[1][0][u],AdVertices[1][1][u],AdVertices[2][0][u],
+		AdVertices[2][1][u],AdVertices[3][0][u],AdVertices[3][1][u],AdVertices[4][0][u],AdVertices[4][1][u],
+		AdVertices[5][0][u],AdVertices[5][1][u],AdVertices[6][0][u],AdVertices[6][1][u]);
+
+	};
+	
+	fclose(CombFile);
+	
+	return 0;
+
+
+};
+
+
+//**********************************************************************************************
