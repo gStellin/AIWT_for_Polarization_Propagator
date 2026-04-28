@@ -2,6 +2,6 @@
 AIWT for the polarization propagator
 
 This repositoty contains the codes for:
-- Cuda
-- Jupyter
-- Mathematica
+- *Cuda*
+- *Jupyter*
+- *Mathematica*
